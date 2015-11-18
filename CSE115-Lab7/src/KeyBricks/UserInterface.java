@@ -11,69 +11,58 @@ import javax.swing.JPanel;
 public class UserInterface {
 	private ArrayList<JButton> _buttons;
 	private JPanel _pane;
+	private JFrame _frame;
 
 	public UserInterface() {
 
 		JFrame f = new JFrame("KeyBricks");
 		JPanel pane = new JPanel();
 		_pane = pane;
+		_frame = f;
 		f.add(pane);
 		f.setPreferredSize(new Dimension(600, 600));
 		pane.setLayout(new GridLayout(4, 1));
 
-				
-		//Create JButton Arraylist that has DataModel tile letters
-		ArrayList <JButton> buttons = new ArrayList <JButton>();
+		// Create JButton Arraylist that has DataModel tile letters
+		ArrayList<JButton> buttons = new ArrayList<JButton>();
 		_buttons = buttons;
-		for (int xIndex = 0; xIndex < 1; xIndex = xIndex + 1) {
-			for (int yIndex = 0; yIndex < 4; yIndex = yIndex + 1) {
-			// get information stored in datamodel singleton
-			Tile currentTile = DataModel.getInstance().getTile(xIndex, yIndex);
-			JButton tempB = new JButton(currentTile.toString());
-			//System.out.println(currentTile.toString());
-			pane.add(tempB);	
-			tempB.setEnabled(true);
-			buttons.add(tempB);
-				}
+		for (int xIndex = 0; xIndex < DataModel.getInstance().getGrid().size(); xIndex = xIndex + 1) {
+			for (int yIndex = 0; yIndex < DataModel.getInstance().getGrid().get(xIndex).size(); yIndex = yIndex + 1) {
+				// get information stored in datamodel singleton
+				Tile currentTile = DataModel.getInstance().getTile(xIndex, yIndex);
+				JButton tempB = new JButton(currentTile.toString());
+				tempB.setFocusable(false);
+				pane.add(tempB);
+				tempB.setEnabled(true);
+				buttons.add(tempB);
 			}
-		
-	
+		}
+
 		f.addKeyListener(new KeyListener(this));
 		f.setFocusable(true);
-		
 		f.setVisible(true);
 		f.pack();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	
+
 	public void update() {
 		_buttons.clear();
-		//for (int xIndex = 0; xIndex < _buttons.size(); xIndex = xIndex + 1) {
-			for (int yIndex = 0; yIndex < 3; yIndex = yIndex + 1) {
-			JButton jb = new JButton();
+		_pane.removeAll();
+		_pane.setLayout(new GridLayout(4, 1));
+		for (int yIndex = 0; yIndex < DataModel.getInstance().getGrid().get(0).size(); yIndex = yIndex + 1) {
 			// get information stored in datamodel singleton
 			Tile currentTile = DataModel.getInstance().getTile(0, yIndex);
-			jb.setText(currentTile.toString());
+			JButton jb = new JButton(currentTile.toString());
+			System.out.println("Adding button with text: "+jb.getText());
+			jb.setFocusable(false);
+			jb.setEnabled(true);
+			jb.setVisible(true);
 			_pane.add(jb);
 			_buttons.add(jb);
-			}
-		//}
-	}
-
-		
-	public void removeJButton() {
-		for(int i=0; i < 1; i = i+1) {
-			JButton buttonRemoval = _buttons.get(i);
-			if (i==0) {
-				buttonRemoval.setEnabled(false);
-			}
-			_buttons.remove(0); 
 		}
+		_frame.setVisible(true);
+		_frame.pack();
+		_pane.repaint();
 	}
 
-	public void clear() {
-		_buttons.clear();
-	}
-
-	
 }
