@@ -49,6 +49,10 @@ public class UserInterface {
 		_buttons.clear();
 		_pane.removeAll();
 		_pane.setLayout(new GridLayout(4, 1));
+		int diff = 4 - DataModel.getInstance().getGrid().get(0).size();
+		for(;diff > 0; diff = diff - 1) {
+			_pane.add(new JPanel());
+		}
 		for (int yIndex = 0; yIndex < DataModel.getInstance().getGrid().get(0).size(); yIndex = yIndex + 1) {
 			// get information stored in datamodel singleton
 			Tile currentTile = DataModel.getInstance().getTile(0, yIndex);
